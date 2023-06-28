@@ -27,7 +27,26 @@ async function run() {
 
    const projectsCollection = client.db("myWebsiteDatabase").collection("projects")
    
+   app.get("/limitProjects", async(req, res ) => {
+      const filter = {}
+      const result = await projectsCollection.find(filter).limit(3).toArray()
+      res.send(result)
+   })
    
+   app.get("/allProjects", async (req, res ) => {
+    const filter = {}
+    const result = await projectsCollection.find(filter).toArray()
+    res.send(result)
+   })
+
+
+   app.post('/makeProject', async (req, res ) => {
+       const makeProject = req.body
+       console.log(makeProject)
+       const result = await projectsCollection.insertOne(makeProject)
+       res.send(result)
+   })
+
 
 
 

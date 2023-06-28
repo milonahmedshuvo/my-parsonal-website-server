@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const cors = require("cors")
 const app = express()
@@ -47,10 +47,20 @@ async function run() {
        res.send(result)
    })
 
+  app.delete("/project", async (req, res) => {
+      const id = req.query.id
+      const filter={_id: new ObjectId(id)}
+      console.log(filter)
+      const result= await projectsCollection.deleteOne(filter)
+      res.send(result)
+  })
 
 
 
 
+
+
+  
   } finally {
   
    

@@ -26,7 +26,9 @@ async function run() {
     });
 
    const projectsCollection = client.db("myWebsiteDatabase").collection("projects")
+   const userInfoCollection = client.db("myWebsiteDatabase").collection("userInfo")
    
+
    app.get("/limitProjects", async(req, res ) => {
       const filter = {}
       const result = await projectsCollection.find(filter).limit(3).toArray()
@@ -57,6 +59,22 @@ async function run() {
 
 
 
+  // userinfo 
+  app.post("/userinfo", async (req, res) => {
+      const userinfo = req.body
+      const result = await userInfoCollection.insertOne(userinfo)
+      res.send(result)
+  })
+
+
+ app.get("/checkAdmin", async (req, res) => {
+     const email = req.query.email
+     const filter = {email:email}
+     const user = await userInfoCollection.findOne(filter)
+     if(user){
+      res.send({isAdmin: user.role === "admin"})
+     }
+ })
 
 
 
